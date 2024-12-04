@@ -54,4 +54,9 @@ public class AlumnoServiceImpl implements AlumnoService {
     public Alumno buscarAlumno(String apellido) {
         return alumnoDao.findAlumno(apellido);
     }
+
+    @Override
+    public Alumno eliminarAlumno(int idAlumno) {
+        return alumnoDao.deleteAlumno(idAlumno);
+    }
 }

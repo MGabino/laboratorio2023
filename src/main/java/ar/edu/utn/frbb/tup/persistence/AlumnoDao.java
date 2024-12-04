@@ -9,5 +9,7 @@ public interface AlumnoDao {
 
     Alumno findAlumno(String apellidoAlumno);
 
+    Alumno deleteAlumno(int idAlumno);
+
     Alumno loadAlumno(Long dni);
 }

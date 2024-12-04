@@ -5,10 +5,10 @@ import java.util.Random;
 
 public class Profesor {
 
-    private final long id = 12;
-    private final String nombre;
-    private final String apellido;
-    private final String titulo;
+    private long id;
+    private String nombre;
+    private String apellido;
+    private String titulo;
 
     private List<Materia> materiasDictadas;
 
@@ -18,14 +18,28 @@ public class Profesor {
         this.titulo = titulo;
     }
 
+    public Profesor() {
+
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+    public void setNombre(String nombre) {this.nombre = nombre;}
     public String getNombre() {
         return nombre;
     }
 
+    public void setApellido(String apellido){this.apellido = apellido;}
     public String getApellido() {
         return apellido;
     }
 
+    public void setTitulo(String titulo){this.titulo = titulo;}
     public String getTitulo() {
         return titulo;
     }

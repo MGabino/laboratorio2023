@@ -19,10 +19,15 @@ public class AlumnoController {
         return alumnoService.crearAlumno(alumnoDto);
 
     }
-    @GetMapping
-    public Alumno buscarAlumno(@RequestParam String apellido) {
+    @GetMapping("/{apellido}")
+    public Alumno buscarAlumno(@PathVariable String apellido) {
 
        return alumnoService.buscarAlumno(apellido);
 
+    }
+
+    @DeleteMapping("/{idAlumno}")
+    public Alumno eliminarAlumno(@PathVariable Integer idAlumno) {
+        return alumnoService.eliminarAlumno(idAlumno);
     }
 }
