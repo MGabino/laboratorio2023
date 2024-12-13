@@ -11,16 +11,21 @@ import ar.edu.utn.frbb.tup.model.exception.CorrelatividadesNoAprobadasException;
 import ar.edu.utn.frbb.tup.model.exception.EstadoIncorrectoException;
 import ar.edu.utn.frbb.tup.persistence.AlumnoDao;
 import ar.edu.utn.frbb.tup.persistence.AlumnoDaoMemoryImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Random;
 
-@Component
+@Service // ESTO ERAAAA LRPM AJNDFUSIRBNFA
 public class AlumnoServiceImpl implements AlumnoService {
-
-    private static final AlumnoDao alumnoDao = new AlumnoDaoMemoryImpl();
-    private static final AsignaturaService asignaturaService = new AsignaturaServiceImpl();
-
+    @Autowired
+    private AlumnoDao alumnoDao;
+    //private static final AlumnoDao alumnoDao = new AlumnoDaoMemoryImpl();
+    //private static final AsignaturaService asignaturaService = new AsignaturaServiceImpl();
+    @Autowired
+    private AsignaturaService asignaturaService;
     @Override
     public void aprobarAsignatura(int materiaId, int nota, long dni) throws EstadoIncorrectoException, CorrelatividadesNoAprobadasException {
         Asignatura a = asignaturaService.getAsignatura(materiaId, dni);
@@ -44,6 +49,8 @@ public class AlumnoServiceImpl implements AlumnoService {
         a.setNombre(alumno.getNombre());
         a.setApellido(alumno.getApellido());
         a.setDni(alumno.getDni());
+        List<Asignatura> asignaturasList = asignaturaService.asignaturaList(); // llamo a las asignaturas para agregarselas a alumno
+        a.setAsignaturas(asignaturasList);
         Random random = new Random();
         a.setId(random.nextLong());
         alumnoDao.saveAlumno(a);

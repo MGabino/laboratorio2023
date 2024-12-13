@@ -1,5 +1,6 @@
 package ar.edu.utn.frbb.tup.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -9,8 +10,9 @@ public class Profesor {
     private String nombre;
     private String apellido;
     private String titulo;
+    //private List<Materia> materiasProfesor;
 
-    private List<Materia> materiasDictadas;
+    private List<String> materiasDictadas;
 
     public Profesor(String nombre, String apellido, String titulo) {
         this.apellido = apellido;
@@ -19,8 +21,11 @@ public class Profesor {
     }
 
     public Profesor() {
-
+        materiasDictadas = new ArrayList<>();
     }
+    //public Profesor() {
+
+    //}
 
     public long getId() {
         return id;
@@ -44,11 +49,11 @@ public class Profesor {
         return titulo;
     }
 
-    public List<Materia> getMateriasDictadas() {
+    public List<String> getMateriasDictadas() {
         return materiasDictadas;
     }
 
-    public void setMateriasDictadas(List<Materia> materiasDictadas) {
-        this.materiasDictadas = materiasDictadas;
+    public void setMateriasDictadas(String nuevaMateria) {
+        this.materiasDictadas.add(nuevaMateria);
     }
 }

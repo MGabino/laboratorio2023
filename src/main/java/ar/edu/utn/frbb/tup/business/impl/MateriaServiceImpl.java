@@ -4,6 +4,7 @@ import ar.edu.utn.frbb.tup.business.MateriaService;
 import ar.edu.utn.frbb.tup.business.ProfesorService;
 import ar.edu.utn.frbb.tup.model.Alumno;
 import ar.edu.utn.frbb.tup.model.Materia;
+import ar.edu.utn.frbb.tup.model.Profesor;
 import ar.edu.utn.frbb.tup.model.dto.MateriaDto;
 import ar.edu.utn.frbb.tup.persistence.MateriaDao;
 import ar.edu.utn.frbb.tup.persistence.MateriaDaoMemoryImpl;
@@ -30,15 +31,12 @@ public class MateriaServiceImpl implements MateriaService {
         m.setCuatrimestre(materia.getCuatrimestre());
         m.setProfesor(profesorService.buscarProfesor(materia.getProfesorId()));
         dao.save(m);
-        if (m.getNombre().contains("a")) {
-            throw new IllegalArgumentException();
-        }
         return m;
     }
 
     @Override
     public List<Materia> getAllMaterias() {
-        return null;
+        return dao.getAllMaterias();
     }
 
     @Override

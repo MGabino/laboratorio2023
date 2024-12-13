@@ -12,12 +12,19 @@ import java.util.List;
 
 public class Alumno {
     private long id;
-
     private String nombre;
     private String apellido;
     private long dni;
-
     private List<Asignatura> asignaturas;
+
+
+    public List<Asignatura> getAsignaturas() {
+        return asignaturas;
+    }  // modi 1
+
+    public void setAsignaturas(List<Asignatura> asignaturas) {
+        this.asignaturas = asignaturas;
+    }  // .
 
     public Alumno() {
     }
@@ -25,9 +32,7 @@ public class Alumno {
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
-
         asignaturas = new ArrayList<>();
-
     }
 
     public void setNombre(String nombre) {

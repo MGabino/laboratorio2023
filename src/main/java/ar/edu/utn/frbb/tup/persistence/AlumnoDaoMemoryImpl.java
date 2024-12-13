@@ -39,7 +39,7 @@ public class AlumnoDaoMemoryImpl implements AlumnoDao {
     public Alumno deleteAlumno(int idAlumno) {
         for (Alumno a: repositorioAlumnos.values()) {
             if (idAlumno == a.getId()){
-                repositorioAlumnos.remove(idAlumno);
+                repositorioAlumnos.values().remove(a);
                 System.out.println("El alumno fue eliminado exitosamente");
                 System.out.println(repositorioAlumnos);
                 return a;

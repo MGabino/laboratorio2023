@@ -13,6 +13,8 @@ import java.util.Random;
 @Service
 public class ProfesorDaoMemoryImpl implements ProfesorDao{
     private static Map<Long, Profesor> repositorioProfesores = new HashMap<>();
+
+
     @Override
     public Profesor saveProfesor(Profesor profesor) {
         Random random = new Random();
@@ -21,7 +23,7 @@ public class ProfesorDaoMemoryImpl implements ProfesorDao{
     }
 
     @Override
-    public Profesor findProfesor(int idProfesor) {
+    public Profesor findProfesor(long idProfesor) {
         for (Profesor p: repositorioProfesores.values()) {
             if (p.getId() == idProfesor){
                 return p;
@@ -32,6 +34,7 @@ public class ProfesorDaoMemoryImpl implements ProfesorDao{
         );
     }
 
+    /*
     @Override
     public Profesor deleteProfesor(int idProfesor) {
         for (Profesor p: repositorioProfesores.values()) {
@@ -46,10 +49,27 @@ public class ProfesorDaoMemoryImpl implements ProfesorDao{
                 HttpStatus.NOT_FOUND, "No existen profesor con esos datos para eliminarlo."
         );
     }
+
+     */
     @Override
-    public Profesor get(long id) {
-            return new Profesor("Luciano", "Salotto", "Lic. Ciencias Computación");
+    public Profesor deleteProfesor(int idProfesor) {
+        for (Profesor p: repositorioProfesores.values()) {
+            if (idProfesor == p.getId()){
+                repositorioProfesores.values().remove(p);
+                System.out.println("profesor eliminado");
+                System.out.println(repositorioProfesores);
+                return p;
+            }
+        }
+        throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "No existen profesores con esos datos para eliminarlo."
+        );
     }
+
+    //@Override
+    //public Profesor get(long id) {
+    //        return new Profesor("Luciano", "Salotto", "Lic. Ciencias Computación");
+    //}
 
 
 }

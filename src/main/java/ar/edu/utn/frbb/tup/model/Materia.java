@@ -8,6 +8,10 @@ public class Materia {
 
     private int materiaId;
     private String nombre;
+    private int anio;
+    private int cuatrimestre;
+    private Profesor profesor;
+    private List<Materia> correlatividades;
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
@@ -35,17 +39,14 @@ public class Materia {
 
     public void setProfesor(Profesor profesor) {
         this.profesor = profesor;
+        profesor.setMateriasDictadas(this.nombre);  // al cuando se setea un profesor a la materia, se agrega en Profesor esta materia
+        // aca esta el error, las no se añade la materia a la lista del profesor
     }
 
     public void setCorrelatividades(List<Materia> correlatividades) {
         this.correlatividades = correlatividades;
     }
 
-    private int anio;
-    private int cuatrimestre;
-    private Profesor profesor;
-
-    private List<Materia> correlatividades;
 
     public Materia(){}
 
