@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 public interface MateriaService {
-    Materia crearMateria(MateriaDto inputData) throws IllegalArgumentException;
+    Materia crearMateria(MateriaDto inputData) throws IllegalArgumentException, MateriaNotFoundException;
 
     List<Materia> getAllMaterias();
 

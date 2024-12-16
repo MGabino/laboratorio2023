@@ -10,6 +10,15 @@ public class MateriaDto {
     private int anio;
     private int cuatrimestre;
     private int profesorId;
+    private int [] correlatividades;
+
+    public int[] getCorrelatividades() {
+        return correlatividades;
+    }
+
+    public void setCorrelatividades(int[] correlatividades) {
+        this.correlatividades = correlatividades;
+    }
 
     public int getProfesorId() {
         return profesorId;

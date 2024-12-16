@@ -12,10 +12,16 @@ public class MateriaDaoMemoryImpl implements MateriaDao {
 
     private static final Map<Integer, Materia> repositorioMateria = new HashMap<>();
     @Override
-    public Materia save(Materia materia) {
+    public Materia save(Materia materia, int[] correlatividades) throws MateriaNotFoundException {
         Random random = new Random();
-        materia.setMateriaId(random.nextInt());
+        materia.setMateriaId(random.nextInt(1,9999));
         repositorioMateria.put(materia.getMateriaId(), materia);
+        final List<Materia> listaCorrelatividades = new ArrayList<>();
+        for (Integer i : correlatividades) {
+            Materia materia2 = findById(i);
+            listaCorrelatividades.add(materia2);
+        }
+        materia.setCorrelatividades(listaCorrelatividades);
         return materia;
     }
 

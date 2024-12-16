@@ -2,6 +2,7 @@ package ar.edu.utn.frbb.tup.model;
 
 import ar.edu.utn.frbb.tup.model.exception.EstadoIncorrectoException;
 
+import java.util.List;
 import java.util.Optional;
 
 public class Asignatura {
@@ -17,6 +18,10 @@ public class Asignatura {
         this.materia = materia;
         this.estado = EstadoAsignatura.NO_CURSADA;
     }
+    public List<Materia> getCorrelatividades(){
+        return this.materia.getCorrelatividades();
+    }
+
 
     public Long getAsignaturaId() {
         return asignaturaId;

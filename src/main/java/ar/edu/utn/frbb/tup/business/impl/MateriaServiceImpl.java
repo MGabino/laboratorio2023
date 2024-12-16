@@ -23,14 +23,14 @@ public class MateriaServiceImpl implements MateriaService {
     @Autowired
     private ProfesorService profesorService;
 
-    @Override
-    public Materia crearMateria(MateriaDto materia) throws IllegalArgumentException{
+    @Override                              // materia
+    public Materia crearMateria(MateriaDto materiadto) throws IllegalArgumentException, MateriaNotFoundException {
         Materia m = new Materia();
-        m.setNombre(materia.getNombre());
-        m.setAnio(materia.getAnio());
-        m.setCuatrimestre(materia.getCuatrimestre());
-        m.setProfesor(profesorService.buscarProfesor(materia.getProfesorId()));
-        dao.save(m);
+        m.setNombre(materiadto.getNombre());
+        m.setAnio(materiadto.getAnio());
+        m.setCuatrimestre(materiadto.getCuatrimestre());
+        m.setProfesor(profesorService.buscarProfesor(materiadto.getProfesorId()));
+        dao.save(m, materiadto.getCorrelatividades());
         return m;
     }
 

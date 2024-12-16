@@ -19,7 +19,7 @@ public class AsignaturaDaoMemoryImpl implements AsignaturaDao {
     @Override
     public Asignatura saveAsignatura(Materia materia){
         Random random = new Random();
-        Asignatura asignatura = new Asignatura(materia, random.nextLong());
+        Asignatura asignatura = new Asignatura(materia, random.nextLong(1, 99999));
         repositorioAsignaturas.put(asignatura.getAsignaturaId(), asignatura);
 
         return asignatura;
@@ -32,5 +32,10 @@ public class AsignaturaDaoMemoryImpl implements AsignaturaDao {
             listaAsignaturas.add(asignatura);
         }
         return listaAsignaturas;
+    }
+
+    public Asignatura getAsignaturabyId(long idAsingatura){
+        Asignatura asignatura = repositorioAsignaturas.get(idAsingatura);
+        return asignatura;
     }
 }

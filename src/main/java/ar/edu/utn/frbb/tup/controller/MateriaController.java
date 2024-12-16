@@ -24,7 +24,7 @@ public class MateriaController {
     }
 
     @PostMapping("/")
-    public Materia crearMateria(@RequestBody MateriaDto materiaDto) {
+    public Materia crearMateria(@RequestBody MateriaDto materiaDto) throws MateriaNotFoundException {
         return materiaService.crearMateria(materiaDto);
     }
 

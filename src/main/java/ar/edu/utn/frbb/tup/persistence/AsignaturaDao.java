@@ -9,4 +9,5 @@ public interface AsignaturaDao {
     void materiaToAsignatura(List<Materia> materiasList);
     List<Asignatura> getListaAsignaturas();
     Asignatura saveAsignatura(Materia m);
+    Asignatura getAsignaturabyId(long idAsignatura);
 }

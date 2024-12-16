@@ -7,13 +7,16 @@ import ar.edu.utn.frbb.tup.model.Asignatura;
 import ar.edu.utn.frbb.tup.model.EstadoAsignatura;
 import ar.edu.utn.frbb.tup.model.Materia;
 import ar.edu.utn.frbb.tup.model.dto.AlumnoDto;
+import ar.edu.utn.frbb.tup.model.dto.AsignaturaDto;
+import ar.edu.utn.frbb.tup.model.exception.AsignaturaInexistenteException;
+import ar.edu.utn.frbb.tup.model.exception.CorrelatividadException;
 import ar.edu.utn.frbb.tup.model.exception.CorrelatividadesNoAprobadasException;
 import ar.edu.utn.frbb.tup.model.exception.EstadoIncorrectoException;
 import ar.edu.utn.frbb.tup.persistence.AlumnoDao;
-import ar.edu.utn.frbb.tup.persistence.AlumnoDaoMemoryImpl;
+import ar.edu.utn.frbb.tup.persistence.AsignaturaDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import ar.edu.utn.frbb.tup.persistence.exception.AlumnoNotFoundException;
 
 import java.util.List;
 import java.util.Random;
@@ -22,7 +25,8 @@ import java.util.Random;
 public class AlumnoServiceImpl implements AlumnoService {
     @Autowired
     private AlumnoDao alumnoDao;
-    //private static final AlumnoDao alumnoDao = new AlumnoDaoMemoryImpl();
+    @Autowired
+    private AsignaturaDao asignaturaDao;
     //private static final AsignaturaService asignaturaService = new AsignaturaServiceImpl();
     @Autowired
     private AsignaturaService asignaturaService;
@@ -66,4 +70,46 @@ public class AlumnoServiceImpl implements AlumnoService {
     public Alumno eliminarAlumno(int idAlumno) {
         return alumnoDao.deleteAlumno(idAlumno);
     }
+
+
+    /* @Override
+    public Asignatura cursarAsignaturaAlumnoById(String apellidoAlumno, long idAsignatura, AsignaturaDto asignaturaDto) throws AlumnoNotFoundException, EstadoIncorrectoException {
+        Alumno alumno = alumnoDao.findAlumno(apellidoAlumno);
+        Asignatura asignatura = asignaturaDao.getAsignaturabyId(idAsignatura);
+
+        if(asignaturaDto.getNota() == null || asignaturaDto.getNota() <= 5){
+            asignatura.cursarAsignatura();
+        } else if (asignaturaDto.getNota() >= 5) {
+            asignatura.aprobarAsignatura(asignaturaDto.getNota());
+        }
+        asignaturaService.actualizarAsignatura(asignatura);
+        alumno.actualizarAsignatura(asignatura);
+        //alumnoDao.saveAlumno(alumno);
+
+        return asignatura;
+    } */
+
+
+
+    @Override
+    public Asignatura cursarAsignaturaAlumnoById(String apellidoAlumno, long idAsignatura, AsignaturaDto asignaturaDto) throws EstadoIncorrectoException, AsignaturaInexistenteException, CorrelatividadException
+        /* CorrelatividadesNoAprobadasException, AlumnoNotFoundException, , AsignaturaNotFoundException, NotaNoValidaException, CambiarEstadoAsignaturaException */ {
+        final Alumno alumno = alumnoDao.findAlumno(apellidoAlumno);
+        final Asignatura asignatura = asignaturaDao.getAsignaturabyId(idAsignatura);
+        if (asignaturaDto.getEstado().equals(EstadoAsignatura.APROBADA)){
+            alumno.aprobarAsignatura(asignatura, asignaturaDto.getNota());
+        }
+        else if (asignaturaDto.getEstado().equals(EstadoAsignatura.CURSADA)){
+            alumno.cursarAsignatura(asignatura);
+        }
+        else {
+            // throw new CambiarEstadoAsignaturaException
+            System.out.println("La condición de la materia solo puede ser cambiada a 'Cursada' o 'Aprobada'.");
+        }
+        asignaturaService.actualizarAsignatura(asignatura);
+        alumno.actualizarAsignatura(asignatura);
+        alumnoDao.saveAlumno(alumno);
+        return asignatura;
+    }
+
 }

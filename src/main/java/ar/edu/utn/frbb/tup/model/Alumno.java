@@ -5,6 +5,7 @@ package ar.edu.utn.frbb.tup.model;
 
 import ar.edu.utn.frbb.tup.model.exception.AsignaturaInexistenteException;
 import ar.edu.utn.frbb.tup.model.exception.CorrelatividadException;
+import ar.edu.utn.frbb.tup.model.exception.CorrelatividadesNoAprobadasException;
 import ar.edu.utn.frbb.tup.model.exception.EstadoIncorrectoException;
 
 import java.util.ArrayList;
@@ -67,31 +68,47 @@ public class Alumno {
         return this.asignaturas;
     }
 
-    public void aprobarAsignatura(Materia materia, int nota) throws EstadoIncorrectoException, CorrelatividadException, AsignaturaInexistenteException {
-        Asignatura asignaturaAAprobar = getAsignaturaAAprobar(materia);
-
+    public void cursarAsignatura (Asignatura asignatura) throws CorrelatividadException /* throws CambiarEstadoAsignaturaException, AsignaturaNotFoundException, CorrelatividadesNoAprobadasException */{
+        existeAsignatura(asignatura);
         for (Materia correlativa :
-                materia.getCorrelatividades()) {
-            chequearCorrelatividad(correlativa);
+                asignatura.getCorrelatividades()) {
+            chequearCorrelatividad(correlativa, asignatura);
         }
-        asignaturaAAprobar.aprobarAsignatura(nota);
+        asignatura.cursarAsignatura();
     }
 
-    private void chequearCorrelatividad(Materia correlativa) throws CorrelatividadException {
+    private void existeAsignatura(Asignatura asignatura) /* throws AsignaturaNotFoundException */ {
+        if(!asignaturas.contains(asignatura)) {
+            // throw new AsignaturaNotFoundException
+            System.out.println("El alumno " + this.nombre + " " + this.apellido + " (ID: " + this.id + "), no tiene " +
+                    "a la asignatura: " + asignatura.getNombreAsignatura());
+        }
+    }
+    public void aprobarAsignatura(Asignatura asignatura, int nota) throws CorrelatividadException, EstadoIncorrectoException, AsignaturaInexistenteException /*, CorrelatividadException */ {
+        //Asignatura asignaturaAAprobar = getAsignaturaAAprobar(asignatura);
+        existeAsignatura(asignatura);
+        for (Materia correlativa :
+                asignatura.getCorrelatividades()) {
+            chequearCorrelatividad(correlativa, asignatura);
+        }
+        asignatura.aprobarAsignatura(nota);
+    }
+
+    private void chequearCorrelatividad(Materia correlativa, Asignatura asignatura) throws CorrelatividadException {
         for (Asignatura a:
                 asignaturas) {
             if (correlativa.getNombre().equals(a.getNombreAsignatura())) {
                 if (!EstadoAsignatura.APROBADA.equals(a.getEstado())) {
-                    throw new CorrelatividadException("La asignatura " + a.getNombreAsignatura() + " no está aprobada");
+                    throw new CorrelatividadException("La asignatura " + correlativa.getNombre() + " [ID: " + a.getAsignaturaId() + "] debe estar aprobada para cursar/aprobar " + asignatura.getNombreAsignatura());
                 }
             }
         }
     }
 
-    private Asignatura getAsignaturaAAprobar(Materia materia) throws AsignaturaInexistenteException {
+    private Asignatura getAsignaturaAAprobar(Asignatura asignatura) throws AsignaturaInexistenteException {
 
         for (Asignatura a: asignaturas) {
-            if (materia.getNombre().equals(a.getNombreAsignatura())) {
+            if (asignatura.getNombreAsignatura().equals(a.getNombreAsignatura())) {
                 return a;
             }
         }
