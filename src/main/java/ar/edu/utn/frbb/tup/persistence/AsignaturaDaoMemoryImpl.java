@@ -38,4 +38,10 @@ public class AsignaturaDaoMemoryImpl implements AsignaturaDao {
         Asignatura asignatura = repositorioAsignaturas.get(idAsingatura);
         return asignatura;
     }
+
+    @Override
+    public void putAsignatura(final Asignatura asignatura) {  //throws AsignaturaNotFoundException
+        Asignatura newAsignatura = getAsignaturabyId(asignatura.getAsignaturaId());
+        repositorioAsignaturas.put(newAsignatura.getAsignaturaId(), newAsignatura);
+    }
 }

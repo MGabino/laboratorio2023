@@ -7,6 +7,7 @@ import ar.edu.utn.frbb.tup.persistence.*;
 import ar.edu.utn.frbb.tup.model.Profesor;
 import ar.edu.utn.frbb.tup.persistence.ProfesorDao;
 import ar.edu.utn.frbb.tup.persistence.ProfesorDaoMemoryImpl;
+import ar.edu.utn.frbb.tup.persistence.exception.YaExisteException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class ProfesorServiceImpl implements ProfesorService {
     }
 
     @Override
-    public Profesor crearProfesor(ProfesorDto profesorDto) {
+    public Profesor crearProfesor(ProfesorDto profesorDto) throws YaExisteException {
         Profesor profesor = new Profesor();
         profesor.setTitulo(profesorDto.getTitulo());
         profesor.setApellido(profesorDto.getApellido());

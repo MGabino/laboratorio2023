@@ -10,4 +10,5 @@ public interface AsignaturaDao {
     List<Asignatura> getListaAsignaturas();
     Asignatura saveAsignatura(Materia m);
     Asignatura getAsignaturabyId(long idAsignatura);
+    void putAsignatura(Asignatura a); //throws AsignaturaNotFoundException;
 }

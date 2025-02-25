@@ -8,6 +8,7 @@ import ar.edu.utn.frbb.tup.model.dto.AlumnoDto;
 import ar.edu.utn.frbb.tup.model.dto.ProfesorDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ar.edu.utn.frbb.tup.persistence.exception.YaExisteException;
 
 @RestController
 @RequestMapping("profesor")
@@ -16,7 +17,7 @@ public class ProfesorController {
     private ProfesorService profesorService;
 
     @PostMapping("/")
-    public Profesor crearProfesor(@RequestBody ProfesorDto profesorDto) {
+    public Profesor crearProfesor(@RequestBody ProfesorDto profesorDto) throws YaExisteException {
         return profesorService.crearProfesor(profesorDto);
     }
 

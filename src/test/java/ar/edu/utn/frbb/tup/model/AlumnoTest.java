@@ -1,10 +1,9 @@
 package ar.edu.utn.frbb.tup.model;
 
 import ar.edu.utn.frbb.tup.model.exception.EstadoIncorrectoException;
-import ar.edu.utn.frbb.tup.model.exception.CorrelatividadesNoAprobadasException;
+import ar.edu.utn.frbb.tup.persistence.RandomNum;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AlumnoTest {
@@ -35,10 +34,10 @@ public class AlumnoTest {
         m4.agregarCorrelatividad(m1);
         m4.agregarCorrelatividad(m2);
         m4.agregarCorrelatividad(m3);
-        a1 = new Asignatura(m1);
-        a2 = new Asignatura(m2);
-        a3 = new Asignatura(m3);
-        a4 = new Asignatura(m4);
+        a1 = new Asignatura(m1, RandomNum.getInstance().generateRandomNumber(999));
+        a2 = new Asignatura(m2, RandomNum.getInstance().generateRandomNumber(999));
+        a3 = new Asignatura(m3, RandomNum.getInstance().generateRandomNumber(999));
+        a4 = new Asignatura(m4, RandomNum.getInstance().generateRandomNumber(999));
 
     }
 

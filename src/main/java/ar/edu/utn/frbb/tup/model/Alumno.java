@@ -119,15 +119,26 @@ public class Alumno {
         return true;
     }
 
-    public void actualizarAsignatura(Asignatura asignatura) {
+    //public void actualizarAsignatura(Asignatura asignatura) {
+    //    for (Asignatura a:
+    //         asignaturas) {
+    //        if (a.getNombreAsignatura().equals(asignatura.getNombreAsignatura())) {
+    //            a.setEstado(asignatura.getEstado());
+    //            a.setNota(asignatura.getNota().get());
+    //        }
+    //    }
+    //}
+
+    public void actualizarAsignatura(Asignatura asignatura) {  // si la asig pasa como cursada no se establece la nota, si para como aprobada si
         for (Asignatura a:
-             asignaturas) {
+                asignaturas) {
             if (a.getNombreAsignatura().equals(asignatura.getNombreAsignatura())) {
+                if (asignatura.getNota().isPresent() || asignatura.getEstado().equals(EstadoAsignatura.APROBADA)){
+                    a.setNota(asignatura.getNota().get());
+                }
                 a.setEstado(asignatura.getEstado());
-                a.setNota(asignatura.getNota().get());
             }
         }
-
     }
 
     public long getId() {

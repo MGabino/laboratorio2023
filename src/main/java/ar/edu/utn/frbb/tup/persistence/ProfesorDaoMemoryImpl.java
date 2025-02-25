@@ -5,6 +5,7 @@ import ar.edu.utn.frbb.tup.model.Profesor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import ar.edu.utn.frbb.tup.persistence.exception.YaExisteException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +17,8 @@ public class ProfesorDaoMemoryImpl implements ProfesorDao{
 
 
     @Override
-    public Profesor saveProfesor(Profesor profesor) {
+    public Profesor saveProfesor(Profesor profesor) throws YaExisteException {
+        profesorYaCreado(profesor);
         Random random = new Random();
         profesor.setId(random.nextLong(1, 999999));
         return repositorioProfesores.put(profesor.getId(), profesor);
@@ -70,6 +72,15 @@ public class ProfesorDaoMemoryImpl implements ProfesorDao{
     //public Profesor get(long id) {
     //        return new Profesor("Luciano", "Salotto", "Lic. Ciencias Computación");
     //}
-
+    private boolean profesorYaCreado(final Profesor profesor) throws YaExisteException {
+        for (Profesor profesor1 : repositorioProfesores.values()) {
+            if (profesor.getNombre().equals(profesor1.getNombre()) &&
+                    profesor.getApellido().equals(profesor1.getApellido())) {
+                throw new YaExisteException("Ya existe un profesor con los datos ingresados [" +
+                        profesor.getNombre() + " " + profesor.getApellido() + "].");
+            }
+        }
+        return false;
+    }
 
 }

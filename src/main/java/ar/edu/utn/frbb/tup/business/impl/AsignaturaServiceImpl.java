@@ -37,7 +37,7 @@ public class AsignaturaServiceImpl implements AsignaturaService {
 
     @Override
     public void actualizarAsignatura(Asignatura a) {
-
+        asignaturaDao.putAsignatura(a);
     }
     @Override
     public List<Asignatura> asignaturaList(){
