@@ -3,7 +3,7 @@ package ar.edu.utn.frbb.tup.persistence;
 import ar.edu.utn.frbb.tup.model.Asignatura;
 import ar.edu.utn.frbb.tup.model.Materia;
 import org.springframework.stereotype.Service;
-
+import ar.edu.utn.frbb.tup.persistence.exception.AsignaturaNoExisteException;
 import java.util.*;
 @Service
 public class AsignaturaDaoMemoryImpl implements AsignaturaDao {
@@ -34,13 +34,16 @@ public class AsignaturaDaoMemoryImpl implements AsignaturaDao {
         return listaAsignaturas;
     }
 
-    public Asignatura getAsignaturabyId(long idAsingatura){
+    public Asignatura getAsignaturabyId(long idAsingatura) throws AsignaturaNoExisteException{
         Asignatura asignatura = repositorioAsignaturas.get(idAsingatura);
+        if (asignatura == null){
+            throw new AsignaturaNoExisteException("No se encuentra ninguna asignatura con el ID: " + idAsingatura);
+        }
         return asignatura;
     }
 
     @Override
-    public void putAsignatura(final Asignatura asignatura) {  //throws AsignaturaNotFoundException
+    public void putAsignatura(final Asignatura asignatura) throws AsignaturaNoExisteException {
         Asignatura newAsignatura = getAsignaturabyId(asignatura.getAsignaturaId());
         repositorioAsignaturas.put(newAsignatura.getAsignaturaId(), newAsignatura);
     }

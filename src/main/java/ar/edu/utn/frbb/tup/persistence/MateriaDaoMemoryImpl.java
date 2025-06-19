@@ -4,6 +4,7 @@ import ar.edu.utn.frbb.tup.model.Materia;
 import ar.edu.utn.frbb.tup.persistence.MateriaDao;
 import ar.edu.utn.frbb.tup.persistence.exception.MateriaNotFoundException;
 import org.springframework.stereotype.Service;
+import ar.edu.utn.frbb.tup.persistence.exception.YaExisteException;
 
 import java.util.*;
 
@@ -12,7 +13,8 @@ public class MateriaDaoMemoryImpl implements MateriaDao {
 
     private static final Map<Integer, Materia> repositorioMateria = new HashMap<>();
     @Override
-    public Materia save(Materia materia, int[] correlatividades) throws MateriaNotFoundException {
+    public Materia save(Materia materia, int[] correlatividades) throws MateriaNotFoundException, YaExisteException {
+        yaExisteMateria(materia);
         Random random = new Random();
         materia.setMateriaId(random.nextInt(1,9999));
         repositorioMateria.put(materia.getMateriaId(), materia);
@@ -45,6 +47,13 @@ public class MateriaDaoMemoryImpl implements MateriaDao {
         }
         throw new MateriaNotFoundException("No se encontró la materia con id " + idMateria);
     }
-
+    private boolean yaExisteMateria(final Materia materia) throws YaExisteException {
+        for (Materia materia1: repositorioMateria.values()){
+            if (materia1.getNombre().equals(materia.getNombre())){
+                throw new YaExisteException("Ya existe una materia con el nombre " + materia.getNombre());
+            }
+        }
+        return true;
+    }
 
 }

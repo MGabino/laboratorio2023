@@ -9,6 +9,7 @@ import ar.edu.utn.frbb.tup.model.EstadoAsignatura;
 import ar.edu.utn.frbb.tup.model.Materia;
 import ar.edu.utn.frbb.tup.model.exception.EstadoIncorrectoException;
 import ar.edu.utn.frbb.tup.persistence.*;
+import ar.edu.utn.frbb.tup.persistence.exception.AsignaturaNoExisteException;
 import ar.edu.utn.frbb.tup.persistence.exception.DaoException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,12 +37,12 @@ public class AsignaturaServiceImpl implements AsignaturaService {
     }  // acomodar para que devuelva
 
     @Override
-    public void actualizarAsignatura(Asignatura a) {
+    public void actualizarAsignatura(Asignatura a) throws AsignaturaNoExisteException {
         asignaturaDao.putAsignatura(a);
     }
     @Override
     public List<Asignatura> asignaturaList(){
-        List<Materia> materiaList = materiaService.getAllMaterias();
+        final List<Materia> materiaList = materiaService.getAllMaterias();
         asignaturaDao.materiaToAsignatura(materiaList);   // aca se crean las asignaturas desde las materias ya creada
         return asignaturaDao.getListaAsignaturas();
     }

@@ -84,7 +84,7 @@ public class Alumno {
                     "a la asignatura: " + asignatura.getNombreAsignatura());
         }
     }
-    public void aprobarAsignatura(Asignatura asignatura, int nota) throws CorrelatividadException, EstadoIncorrectoException, AsignaturaInexistenteException /*, CorrelatividadException */ {
+    public void aprobarAsignatura(Asignatura asignatura, int nota) throws CorrelatividadException, EstadoIncorrectoException /*, CorrelatividadException */ {
         //Asignatura asignaturaAAprobar = getAsignaturaAAprobar(asignatura);
         existeAsignatura(asignatura);
         for (Materia correlativa :

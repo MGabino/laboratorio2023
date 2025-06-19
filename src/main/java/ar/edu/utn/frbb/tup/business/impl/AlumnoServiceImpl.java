@@ -14,6 +14,7 @@ import ar.edu.utn.frbb.tup.model.exception.CorrelatividadesNoAprobadasException;
 import ar.edu.utn.frbb.tup.model.exception.EstadoIncorrectoException;
 import ar.edu.utn.frbb.tup.persistence.AlumnoDao;
 import ar.edu.utn.frbb.tup.persistence.AsignaturaDao;
+import ar.edu.utn.frbb.tup.persistence.exception.AsignaturaNoExisteException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ar.edu.utn.frbb.tup.persistence.exception.AlumnoNotFoundException;
@@ -31,7 +32,7 @@ public class AlumnoServiceImpl implements AlumnoService {
     @Autowired
     private AsignaturaService asignaturaService;
     @Override  //sin uso
-    public void aprobarAsignatura(int materiaId, int nota, long dni) throws EstadoIncorrectoException, CorrelatividadesNoAprobadasException {
+    public void aprobarAsignatura(int materiaId, int nota, long dni) throws EstadoIncorrectoException, CorrelatividadesNoAprobadasException, AsignaturaNoExisteException {
         Asignatura a = asignaturaService.getAsignatura(materiaId, dni);
         for (Materia m:
                 a.getMateria().getCorrelatividades()) {
@@ -72,27 +73,8 @@ public class AlumnoServiceImpl implements AlumnoService {
     }
 
 
-    /* @Override
-    public Asignatura cursarAsignaturaAlumnoById(String apellidoAlumno, long idAsignatura, AsignaturaDto asignaturaDto) throws AlumnoNotFoundException, EstadoIncorrectoException {
-        Alumno alumno = alumnoDao.findAlumno(apellidoAlumno);
-        Asignatura asignatura = asignaturaDao.getAsignaturabyId(idAsignatura);
-
-        if(asignaturaDto.getNota() == null || asignaturaDto.getNota() <= 5){
-            asignatura.cursarAsignatura();
-        } else if (asignaturaDto.getNota() >= 5) {
-            asignatura.aprobarAsignatura(asignaturaDto.getNota());
-        }
-        asignaturaService.actualizarAsignatura(asignatura);
-        alumno.actualizarAsignatura(asignatura);
-        //alumnoDao.saveAlumno(alumno);
-
-        return asignatura;
-    } */
-
-
-
     @Override
-    public Asignatura cursarAsignaturaAlumnoById(String apellidoAlumno, long idAsignatura, AsignaturaDto asignaturaDto) throws EstadoIncorrectoException, AsignaturaInexistenteException, CorrelatividadException
+    public Asignatura cursarAsignaturaAlumnoById(String apellidoAlumno, long idAsignatura, AsignaturaDto asignaturaDto) throws EstadoIncorrectoException, CorrelatividadException, AsignaturaNoExisteException
         /* CorrelatividadesNoAprobadasException, AlumnoNotFoundException, , AsignaturaNotFoundException, NotaNoValidaException, CambiarEstadoAsignaturaException */ {
         final Alumno alumno = alumnoDao.findAlumno(apellidoAlumno);
         final Asignatura asignatura = asignaturaDao.getAsignaturabyId(idAsignatura);

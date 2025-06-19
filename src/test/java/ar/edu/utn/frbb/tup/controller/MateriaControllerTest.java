@@ -49,7 +49,6 @@ public class MateriaControllerTest {
 
     @Test
     public void crearMateriaTest() throws Exception {
-
         Mockito.when(materiaService.crearMateria(any(MateriaDto.class))).thenReturn(new Materia());
         MateriaDto materiaDto = new MateriaDto();
         materiaDto.setAnio(1);
@@ -57,12 +56,11 @@ public class MateriaControllerTest {
         materiaDto.setNombre("Laboratorio II");
         materiaDto.setProfesorId(345);
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/materia")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(materiaDto))
-                .accept(MediaType.APPLICATION_JSON)).andExpect(status().is2xxSuccessful())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(materiaDto))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
                 .andReturn();
-
-
 
         Assertions.assertEquals(new Materia(), mapper.readValue(result.getResponse().getContentAsString(), Materia.class));
     }

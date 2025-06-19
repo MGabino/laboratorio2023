@@ -9,15 +9,19 @@ import ar.edu.utn.frbb.tup.model.dto.ProfesorDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ar.edu.utn.frbb.tup.persistence.exception.YaExisteException;
+import ar.edu.utn.frbb.tup.controller.validator.ProfesorValidator;
 
 @RestController
 @RequestMapping("profesor")
 public class ProfesorController {
     @Autowired
     private ProfesorService profesorService;
+    @Autowired
+    private ProfesorValidator profesorValidator;
 
     @PostMapping("/")
     public Profesor crearProfesor(@RequestBody ProfesorDto profesorDto) throws YaExisteException {
+        profesorValidator.validarProfesor(profesorDto);
         return profesorService.crearProfesor(profesorDto);
     }
 

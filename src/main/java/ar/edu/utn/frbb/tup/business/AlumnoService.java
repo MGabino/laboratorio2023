@@ -9,9 +9,10 @@ import ar.edu.utn.frbb.tup.model.exception.CorrelatividadesNoAprobadasException;
 import ar.edu.utn.frbb.tup.model.exception.EstadoIncorrectoException;
 import ar.edu.utn.frbb.tup.persistence.exception.AlumnoNotFoundException;
 import ar.edu.utn.frbb.tup.model.exception.CorrelatividadException;
+import ar.edu.utn.frbb.tup.persistence.exception.AsignaturaNoExisteException;
 
 public interface AlumnoService {
-    void aprobarAsignatura(int materiaId, int nota, long dni) throws EstadoIncorrectoException, CorrelatividadesNoAprobadasException;
+    void aprobarAsignatura(int materiaId, int nota, long dni) throws EstadoIncorrectoException, CorrelatividadesNoAprobadasException, AsignaturaNoExisteException;
 
     Alumno crearAlumno(AlumnoDto alumno);
 
@@ -20,5 +21,5 @@ public interface AlumnoService {
     Alumno eliminarAlumno(int idAlumno);
 
     Asignatura cursarAsignaturaAlumnoById(String apellidoAlumno, long idAsignatura, AsignaturaDto asignaturaDto) throws CorrelatividadesNoAprobadasException,
-            AlumnoNotFoundException, AsignaturaInexistenteException, CorrelatividadException, EstadoIncorrectoException;
+            AlumnoNotFoundException, AsignaturaInexistenteException, CorrelatividadException, EstadoIncorrectoException, AsignaturaNoExisteException;
 }
