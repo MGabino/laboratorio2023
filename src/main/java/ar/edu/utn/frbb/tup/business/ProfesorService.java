@@ -1,5 +1,5 @@
 package ar.edu.utn.frbb.tup.business;
-
+import ar.edu.utn.frbb.tup.model.Materia;
 import ar.edu.utn.frbb.tup.model.Alumno;
 import ar.edu.utn.frbb.tup.model.Profesor;
 import ar.edu.utn.frbb.tup.model.dto.ProfesorDto;
@@ -13,4 +13,6 @@ public interface ProfesorService {
     Profesor findProfesor(int idProfesor);
 
     Profesor deleteProfesor(int idProfesor);
+
+    Profesor actualizarProfesorPorId(Long idProfesor, ProfesorDto profesorDto); //throws ProfesorNotFoundException, DatoInvalidoException;
 }

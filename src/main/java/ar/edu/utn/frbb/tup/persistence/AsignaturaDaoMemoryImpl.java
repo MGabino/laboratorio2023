@@ -47,4 +47,9 @@ public class AsignaturaDaoMemoryImpl implements AsignaturaDao {
         Asignatura newAsignatura = getAsignaturabyId(asignatura.getAsignaturaId());
         repositorioAsignaturas.put(newAsignatura.getAsignaturaId(), newAsignatura);
     }
+
+    private List<Asignatura> listaAsignaturas = new ArrayList<>();
+    public void clearAsignaturas() {
+        listaAsignaturas.clear();
+    }
 }

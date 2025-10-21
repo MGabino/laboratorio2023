@@ -7,7 +7,6 @@ import ar.edu.utn.frbb.tup.model.dto.ProfesorDto;
 public class ProfesorValidator {
     public void validarProfesor(ProfesorDto profesordto) {
 
-
         if (profesordto.getNombre().isEmpty() || profesordto.getNombre() == null) {
             throw new IllegalArgumentException("El nombre del profesor es obligatorio");
         }

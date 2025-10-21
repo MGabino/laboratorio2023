@@ -18,8 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import org.yaml.snakeyaml.TypeDescription;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 
 @Service
@@ -40,29 +42,28 @@ public class AsignaturaServiceImpl implements AsignaturaService {
     public void actualizarAsignatura(Asignatura a) throws AsignaturaNoExisteException {
         asignaturaDao.putAsignatura(a);
     }
+    //@Override
+    //public List<Asignatura> asignaturaList(){
+    //    final List<Materia> materiaList = materiaService.getAllMaterias();
+    //    asignaturaDao.materiaToAsignatura(materiaList);   // aca se crean las asignaturas desde las materias ya creada
+    //    return asignaturaDao.getListaAsignaturas();
+    //}
+
     @Override
     public List<Asignatura> asignaturaList(){
         final List<Materia> materiaList = materiaService.getAllMaterias();
-        asignaturaDao.materiaToAsignatura(materiaList);   // aca se crean las asignaturas desde las materias ya creada
-        return asignaturaDao.getListaAsignaturas();
+
+        List<Asignatura> asignaturas = new ArrayList<>();
+
+        for (Materia materia : materiaList) {
+            Asignatura asignatura = new Asignatura(materia, generarIdUnico());
+            asignaturas.add(asignatura);
+        }
+
+        return asignaturas;
     }
 
-    //@Override
-    //public List<Asignatura> asignaturaList() {
-    //    List<Materia> materiaList;
-    //    try {
-    //        materiaList = dao.getAllMaterias();
-    //    } catch (NullPointerException e) {
-    //        System.out.println("Error al obtener la lista de materias");  // Manejar el caso en el que materiaService o getAllMaterias() es nulo
-    //        return Collections.emptyList(); // O lanzar una excepción personalizada
-    //    }
-
-    //    try {
-    //        asignaturaDao.materiaToAsignatura(materiaList);
-    //    } catch (Exception e) {
-    //        // Manejar cualquier excepción que pueda ocurrir en materiaToAsignatura
-    //        System.out.println("Error al convertir materias a asignaturas");
-    //    }
-    //    return asignaturaDao.getListaAsignaturas();
-    //}
+    private long generarIdUnico() {
+        return UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
+    }
 }

@@ -11,4 +11,6 @@ public interface ProfesorDao {
     Profesor findProfesor(long idProfesor);
 
     Profesor deleteProfesor(int idProfesor);
+
+    void update(Long idProfesor, Profesor p);
 }

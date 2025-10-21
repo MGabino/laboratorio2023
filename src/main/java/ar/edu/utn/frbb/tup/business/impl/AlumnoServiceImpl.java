@@ -18,6 +18,7 @@ import ar.edu.utn.frbb.tup.persistence.exception.AsignaturaNoExisteException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ar.edu.utn.frbb.tup.persistence.exception.AlumnoNotFoundException;
+import java.util.ArrayList;
 
 import java.util.List;
 import java.util.Random;
@@ -48,14 +49,39 @@ public class AlumnoServiceImpl implements AlumnoService {
         alumnoDao.saveAlumno(alumno);
     }
 
+    //@Override
+    //public Alumno crearAlumno(AlumnoDto alumno) {
+    //    Alumno a = new Alumno();
+    //    a.setNombre(alumno.getNombre());
+    //    a.setApellido(alumno.getApellido());
+    //    a.setDni(alumno.getDni());
+    //    List<Asignatura> asignaturasList = asignaturaService.asignaturaList(); // llamo a las asignaturas para agregarselas a alumno
+    //    a.setAsignaturas(asignaturasList);
+    //    Random random = new Random();
+    //    a.setId(random.nextLong());
+    //    alumnoDao.saveAlumno(a);
+    //    return a;
+    //}
+
     @Override
     public Alumno crearAlumno(AlumnoDto alumno) {
         Alumno a = new Alumno();
         a.setNombre(alumno.getNombre());
         a.setApellido(alumno.getApellido());
         a.setDni(alumno.getDni());
-        List<Asignatura> asignaturasList = asignaturaService.asignaturaList(); // llamo a las asignaturas para agregarselas a alumno
-        a.setAsignaturas(asignaturasList);
+
+        List<Asignatura> asignaturasBase = asignaturaService.asignaturaList();
+        List<Asignatura> asignaturasAlumno = new ArrayList<>();
+
+        for (Asignatura original : asignaturasBase) {
+            Asignatura copia = new Asignatura(original.getMateria(), original.getAsignaturaId());
+            // Estado por defecto
+            copia.setEstado(EstadoAsignatura.NO_CURSADA);
+            asignaturasAlumno.add(copia);
+        }
+
+        a.setAsignaturas(asignaturasAlumno);
+
         Random random = new Random();
         a.setId(random.nextLong());
         alumnoDao.saveAlumno(a);
@@ -63,8 +89,8 @@ public class AlumnoServiceImpl implements AlumnoService {
     }
 
     @Override
-    public Alumno buscarAlumno(String apellido) {
-        return alumnoDao.findAlumno(apellido);
+    public Alumno buscarAlumno(Long idAlumno) {
+        return alumnoDao.findAlumno(idAlumno);
     }
 
     @Override
@@ -72,12 +98,29 @@ public class AlumnoServiceImpl implements AlumnoService {
         return alumnoDao.deleteAlumno(idAlumno);
     }
 
+    @Override
+    public Alumno actualizarAlumnoPorId(Long idAlumno, AlumnoDto alumnoDto) throws AlumnoNotFoundException {
+        final Alumno alumno = alumnoDao.findAlumno(idAlumno);
+
+        alumno.setId(idAlumno);
+        alumno.setNombre(alumnoDto.getNombre());
+        alumno.setApellido(alumnoDto.getApellido());;
+        alumno.setDni(alumnoDto.getDni());
+
+        alumnoDao.update(idAlumno, alumno);
+        return alumno;
+    }
 
     @Override
-    public Asignatura cursarAsignaturaAlumnoById(String apellidoAlumno, long idAsignatura, AsignaturaDto asignaturaDto) throws EstadoIncorrectoException, CorrelatividadException, AsignaturaNoExisteException
+    public Asignatura cursarAsignaturaAlumnoById(Long idAlumno, long idAsignatura, AsignaturaDto asignaturaDto) throws EstadoIncorrectoException, CorrelatividadException, AsignaturaNoExisteException
         /* CorrelatividadesNoAprobadasException, AlumnoNotFoundException, , AsignaturaNotFoundException, NotaNoValidaException, CambiarEstadoAsignaturaException */ {
-        final Alumno alumno = alumnoDao.findAlumno(apellidoAlumno);
-        final Asignatura asignatura = asignaturaDao.getAsignaturabyId(idAsignatura);
+        final Alumno alumno = alumnoDao.findAlumno(idAlumno);
+
+        final Asignatura asignatura = alumno.getAsignaturas().stream()
+                .filter(a -> a.getAsignaturaId().equals(idAsignatura))
+                .findFirst()
+                .orElseThrow(() -> new AsignaturaNoExisteException("No se encuentra ninguna asignatura con el ID: " + idAsignatura));
+
         if (asignaturaDto.getEstado().equals(EstadoAsignatura.APROBADA)){
             alumno.aprobarAsignatura(asignatura, asignaturaDto.getNota());
         }
@@ -88,8 +131,9 @@ public class AlumnoServiceImpl implements AlumnoService {
             // throw new CambiarEstadoAsignaturaException
             System.out.println("La condición de la materia solo puede ser cambiada a 'Cursada' o 'Aprobada'.");
         }
-        asignaturaService.actualizarAsignatura(asignatura);
+        // asignaturaService.actualizarAsignatura(asignatura);
         alumno.actualizarAsignatura(asignatura);
+
         alumnoDao.saveAlumno(alumno);
         return asignatura;
     }

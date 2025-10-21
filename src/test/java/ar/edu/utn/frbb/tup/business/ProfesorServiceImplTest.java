@@ -55,7 +55,7 @@ public class ProfesorServiceImplTest {
     //@Test
     //public void buscarProfesorPorIdIncorrecto() throws ProfesorNotFoundException {
     //    Profesor profesor = new Profesor("Gabino", "Mangas", "Tecnico");
-    //    when(profesorDao.findProfesorById(1)).thenThrow(new ProfesorNotFoundException("No se pudo encontrar un profesor con el ID: 1."));//    assertThrows(ProfesorNotFoundException.class, () -> {
+    //    when(profesorDao.findProfesor(1)).thenThrow(new ProfesorNotFoundException("No se pudo encontrar un profesor con el ID: 1."));//    assertThrows(ProfesorNotFoundException.class, () -> {
     //        profesorService.findProfesor(1L);
     //    });
     //}

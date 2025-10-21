@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,10 +47,10 @@ public class AlumnoServiceImplTest {
     }
 
     @Test
-    public void testBuscarAlumnoId_NoFeliz_AlumnoNoEncontrado() throws AlumnoNotFoundException {
-        String apellidoInexistente = "lopez";
-        when(alumnoDao.findAlumno(apellidoInexistente)).thenThrow(new AlumnoNotFoundException("El alumno no fue encontrado"));
+    public void testBuscarAlumnoId_NoFeliz_AlumnoNoEncontrado() throws ResponseStatusException {
+        Long idInexistente = 44444444L;
+        when(alumnoDao.findAlumno(idInexistente)).thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "No existen alumnos con esos datos."));
 
-        assertThrows(AlumnoNotFoundException.class, () -> alumnoService.buscarAlumno(apellidoInexistente));
+        assertThrows(ResponseStatusException.class, () -> alumnoService.buscarAlumno(idInexistente));
     }
 }

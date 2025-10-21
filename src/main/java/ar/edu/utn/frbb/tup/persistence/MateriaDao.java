@@ -7,7 +7,7 @@ import ar.edu.utn.frbb.tup.persistence.exception.YaExisteException;
 import java.util.List;
 
 public interface MateriaDao {
-    Materia save(Materia materia, int[] correlatividades) throws MateriaNotFoundException, YaExisteException;
+    Materia save(Materia materia, List<Integer> correlatividades) throws MateriaNotFoundException, YaExisteException;
 
     List<Materia> getAllMaterias();
 

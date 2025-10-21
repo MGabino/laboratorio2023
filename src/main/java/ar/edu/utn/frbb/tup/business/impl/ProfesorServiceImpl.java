@@ -10,7 +10,8 @@ import ar.edu.utn.frbb.tup.persistence.ProfesorDaoMemoryImpl;
 import ar.edu.utn.frbb.tup.persistence.exception.YaExisteException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.util.Comparator;
+import ar.edu.utn.frbb.tup.model.Materia;
 import java.util.Random;
 
 @Service
@@ -37,14 +38,33 @@ public class ProfesorServiceImpl implements ProfesorService {
         return profesor;
     }
 
-    @Override
+    @Override                   // long
     public Profesor findProfesor(int idProfesor) {
-        return profesorDao.findProfesor(idProfesor);
+        Profesor profesor = profesorDao.findProfesor(idProfesor);
+
+        // Ordenar por nombre directamente porque es String
+        profesor.getMateriasDictadas()
+                .sort(String.CASE_INSENSITIVE_ORDER);
+
+        return profesor;
     }
 
     @Override
     public Profesor deleteProfesor(int idProfesor) {
         return profesorDao.deleteProfesor(idProfesor);
+    }
+
+    @Override
+    public Profesor actualizarProfesorPorId(final Long idProfesor, final ProfesorDto profesorDto) { //throws ProfesorNotFoundException, DatoInvalidoException {
+        final Profesor profesor = profesorDao.findProfesor(idProfesor);
+
+        profesor.setId(idProfesor);
+        profesor.setNombre(profesorDto.getNombre());
+        profesor.setApellido(profesorDto.getApellido());
+        profesor.setTitulo(profesorDto.getTitulo());
+
+        profesorDao.update(idProfesor, profesor);
+        return profesor;
     }
 
 

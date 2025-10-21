@@ -36,10 +36,10 @@ public class AlumnoController {
         alumnoValidator.validarAlumno(alumnoDto);
         return alumnoService.crearAlumno(alumnoDto);
     }
-    @GetMapping("/{apellido}")
-    public Alumno buscarAlumno(@PathVariable String apellido) {
+    @GetMapping("/{idAlumno}")
+    public Alumno buscarAlumno(@PathVariable Long idAlumno) {
 
-       return alumnoService.buscarAlumno(apellido);
+       return alumnoService.buscarAlumno(idAlumno);
 
     }
 
@@ -48,17 +48,24 @@ public class AlumnoController {
         return alumnoService.eliminarAlumno(idAlumno);
     }
 
-    @PutMapping("/{apellido}/asignatura/{idAsignatura}")
-    public ResponseEntity<Asignatura> cursarAsignaturaAlumnoById(@PathVariable String apellido, @PathVariable long idAsignatura, @RequestBody AsignaturaDto asignaturaDto)
+    @PutMapping("/{idAlumno}/asignatura/{idAsignatura}")
+    public ResponseEntity<Asignatura> cursarAsignaturaAlumnoById(@PathVariable Long idAlumno, @PathVariable long idAsignatura, @RequestBody AsignaturaDto asignaturaDto)
             throws CorrelatividadesNoAprobadasException, EstadoIncorrectoException, AsignaturaInexistenteException, CorrelatividadException, AsignaturaNoExisteException {
         asignaturaValidator.validarAsignatura(asignaturaDto);
         try {
-            Asignatura asignatura = alumnoService.cursarAsignaturaAlumnoById(apellido, idAsignatura, asignaturaDto);
+            Asignatura asignatura = alumnoService.cursarAsignaturaAlumnoById(idAlumno, idAsignatura, asignaturaDto);
             return ResponseEntity.ok(asignatura);
         } catch (AlumnoNotFoundException e) {
             return ResponseEntity.notFound().build();
         } catch (EstadoIncorrectoException e) {
             return ResponseEntity.badRequest().build(); // Manejar otra excepción si es necesario
         }
+    }
+
+    @PutMapping("/{idAlumno}")
+    public Alumno actualizarAlumnoPorId(@PathVariable("idAlumno") Long idAlumno,
+                                        @RequestBody AlumnoDto alumnoDto) throws AlumnoNotFoundException {
+        alumnoValidator.validarAlumno(alumnoDto);
+        return alumnoService.actualizarAlumnoPorId(idAlumno, alumnoDto);
     }
 }

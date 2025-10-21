@@ -16,10 +16,12 @@ public interface AlumnoService {
 
     Alumno crearAlumno(AlumnoDto alumno);
 
-    Alumno buscarAlumno(String apellidoAlumno);
+    Alumno buscarAlumno(Long idAlumno);
 
     Alumno eliminarAlumno(int idAlumno);
 
-    Asignatura cursarAsignaturaAlumnoById(String apellidoAlumno, long idAsignatura, AsignaturaDto asignaturaDto) throws CorrelatividadesNoAprobadasException,
+    Asignatura cursarAsignaturaAlumnoById(Long idAlumno, long idAsignatura, AsignaturaDto asignaturaDto) throws CorrelatividadesNoAprobadasException,
             AlumnoNotFoundException, AsignaturaInexistenteException, CorrelatividadException, EstadoIncorrectoException, AsignaturaNoExisteException;
+    Alumno actualizarAlumnoPorId(Long idAlumno, AlumnoDto alumnoDto) throws AlumnoNotFoundException;
+
 }

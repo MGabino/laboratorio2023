@@ -1,6 +1,7 @@
 package ar.edu.utn.frbb.tup.persistence;
 
 import ar.edu.utn.frbb.tup.model.Alumno;
+import ar.edu.utn.frbb.tup.persistence.exception.AlumnoNotFoundException;
 import ar.edu.utn.frbb.tup.persistence.exception.DaoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -24,17 +25,17 @@ public class AlumnoDaoMemoryImpl implements AlumnoDao {
     }
 
     @Override
-    public Alumno findAlumno(String apellidoAlumno) {
-        for (Alumno a: repositorioAlumnos.values()) {
-            if (a.getApellido().equals(apellidoAlumno)){
-                return a;
-            }
+    public Alumno findAlumno(final Long id) throws ResponseStatusException {
+        Alumno alumno = repositorioAlumnos.get(id);
+        if (alumno == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No existen alumnos con esos datos.");
         }
-        throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "No existen alumnos con esos datos."
-        );
+        return alumno;
     }
 
+    // throw new ResponseStatusException(
+    //                HttpStatus.NOT_FOUND, "No existen alumnos con esos datos."
+    //        );
     @Override
     public Alumno deleteAlumno(int idAlumno) {
         for (Alumno a: repositorioAlumnos.values()) {
@@ -53,6 +54,12 @@ public class AlumnoDaoMemoryImpl implements AlumnoDao {
     @Override
     public Alumno loadAlumno(Long dni) {
         return null;
+    }
+
+    @Override
+    public void update(final Long id, final Alumno alumno) {
+
+        repositorioAlumnos.put(id, alumno);
     }
 
 }

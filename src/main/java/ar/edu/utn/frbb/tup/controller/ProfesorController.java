@@ -35,4 +35,12 @@ public class ProfesorController {
         return profesorService.deleteProfesor(idProfesor);
     }
 
+    @PutMapping("/{idProfesor}")
+    public Profesor actualizarProfesorPorId(@PathVariable("idProfesor") Long idProfesor,
+                                            @RequestBody ProfesorDto profesorDto) //throws ProfesorNotFoundException, DatoInvalidoException
+    {
+        profesorValidator.validarProfesor(profesorDto);
+        return profesorService.actualizarProfesorPorId(idProfesor, profesorDto);
+    }
+
 }

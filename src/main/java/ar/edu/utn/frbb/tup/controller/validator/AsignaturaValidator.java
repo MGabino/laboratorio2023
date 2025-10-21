@@ -1,5 +1,6 @@
 package ar.edu.utn.frbb.tup.controller.validator;
 
+import ar.edu.utn.frbb.tup.model.EstadoAsignatura;
 import org.springframework.stereotype.Component;
 import ar.edu.utn.frbb.tup.model.dto.AsignaturaDto;
 

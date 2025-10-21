@@ -83,4 +83,9 @@ public class ProfesorDaoMemoryImpl implements ProfesorDao{
         return false;
     }
 
+    @Override
+    public void update(final Long id, final Profesor p) {
+        repositorioProfesores.put(id, p);
+    }
+
 }
