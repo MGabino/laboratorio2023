@@ -23,13 +23,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-@Service // ESTO ERAAAA LRPM AJNDFUSIRBNFA
+@Service
 public class AlumnoServiceImpl implements AlumnoService {
     @Autowired
     private AlumnoDao alumnoDao;
     @Autowired
     private AsignaturaDao asignaturaDao;
-    //private static final AsignaturaService asignaturaService = new AsignaturaServiceImpl();
+
     @Autowired
     private AsignaturaService asignaturaService;
     @Override  //sin uso
@@ -48,20 +48,6 @@ public class AlumnoServiceImpl implements AlumnoService {
         alumno.actualizarAsignatura(a);
         alumnoDao.saveAlumno(alumno);
     }
-
-    //@Override
-    //public Alumno crearAlumno(AlumnoDto alumno) {
-    //    Alumno a = new Alumno();
-    //    a.setNombre(alumno.getNombre());
-    //    a.setApellido(alumno.getApellido());
-    //    a.setDni(alumno.getDni());
-    //    List<Asignatura> asignaturasList = asignaturaService.asignaturaList(); // llamo a las asignaturas para agregarselas a alumno
-    //    a.setAsignaturas(asignaturasList);
-    //    Random random = new Random();
-    //    a.setId(random.nextLong());
-    //    alumnoDao.saveAlumno(a);
-    //    return a;
-    //}
 
     @Override
     public Alumno crearAlumno(AlumnoDto alumno) {
@@ -113,7 +99,7 @@ public class AlumnoServiceImpl implements AlumnoService {
 
     @Override
     public Asignatura cursarAsignaturaAlumnoById(Long idAlumno, long idAsignatura, AsignaturaDto asignaturaDto) throws EstadoIncorrectoException, CorrelatividadException, AsignaturaNoExisteException
-        /* CorrelatividadesNoAprobadasException, AlumnoNotFoundException, , AsignaturaNotFoundException, NotaNoValidaException, CambiarEstadoAsignaturaException */ {
+        {
         final Alumno alumno = alumnoDao.findAlumno(idAlumno);
 
         final Asignatura asignatura = alumno.getAsignaturas().stream()
@@ -128,10 +114,8 @@ public class AlumnoServiceImpl implements AlumnoService {
             alumno.cursarAsignatura(asignatura);
         }
         else {
-            // throw new CambiarEstadoAsignaturaException
             System.out.println("La condición de la materia solo puede ser cambiada a 'Cursada' o 'Aprobada'.");
         }
-        // asignaturaService.actualizarAsignatura(asignatura);
         alumno.actualizarAsignatura(asignatura);
 
         alumnoDao.saveAlumno(alumno);

@@ -18,11 +18,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import ar.edu.utn.frbb.tup.persistence.exception.YaExisteException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 //import static org.mockito.Mockito.when;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
@@ -31,7 +31,7 @@ public class ProfesorServiceImplTest {
     ProfesorServiceImpl profesorService;
 
     @Mock
-    ProfesorDao profesorDao;
+    ProfesorDao dao;
 
     @Mock
     MateriaDao materiaDao;
@@ -44,12 +44,96 @@ public class ProfesorServiceImplTest {
         profesorDto.setTitulo("Tecnico");
 
         Profesor profesor = new Profesor("Gabino", "Mangas", "Tecnico");
-        when(profesorDao.saveProfesor(profesor)).thenReturn(profesor);
+        when(dao.saveProfesor(profesor)).thenReturn(profesor);
 
         Profesor profesorCreado = profesorService.crearProfesor(profesorDto);
 
         assertEquals(profesorCreado.getNombre(), "Gabino");
         assertEquals(profesorCreado.getApellido(), "Mangas");
+    }
+
+
+    @Test
+    void testBuscarProfesor() {
+        Profesor profesor = new Profesor();
+        profesor.setId(10L);
+        profesor.setNombre("Carlos");
+
+        when(dao.findProfesor(10L)).thenReturn(profesor);
+
+        Profesor result = profesorService.buscarProfesor(10L);
+
+        assertNotNull(result);
+        assertEquals(10L, result.getId());
+        assertEquals("Carlos", result.getNombre());
+
+        verify(dao).findProfesor(10L);
+    }
+
+
+    @Test
+    void testFindProfesor_OrdenaMateriasDictadas() {
+
+        Profesor profesor = new Profesor();
+        profesor.setId(1);
+        profesor.setNombre("Juan");
+        profesor.setApellido("Gomez");
+        profesor.setTitulo("Licenciado");
+        profesor.setMateriasDictadas(new ArrayList<>(List.of(
+                "Laboratorio",
+                "Algebra",
+                "Matematica"
+        )));
+
+        when(dao.findProfesor(1)).thenReturn(profesor);
+
+        Profesor result = profesorService.findProfesor(1);
+
+        assertEquals(3, result.getMateriasDictadas().size());
+
+        assertEquals(List.of("Algebra", "Matematica", "Laboratorio"), result.getMateriasDictadas());
+    }
+
+
+    @Test
+    void testDeleteProfesor() {
+        Profesor profesor = new Profesor();
+        profesor.setId(20L);
+
+        when(dao.deleteProfesor(20)).thenReturn(profesor);
+
+        Profesor result = profesorService.deleteProfesor(20);
+
+        assertNotNull(result);
+        assertEquals(20L, result.getId());
+
+        verify(dao).deleteProfesor(20);
+    }
+
+
+    @Test
+    void testActualizarProfesorPorId() {
+        Profesor prof = new Profesor();
+        prof.setId(30L);
+        prof.setNombre("Viejo");
+        prof.setApellido("Profesor");
+        prof.setTitulo("Lic.");
+
+        ProfesorDto dto = new ProfesorDto();
+        dto.setNombre("Nuevo");
+        dto.setApellido("Actualizado");
+        dto.setTitulo("Dr.");
+
+        when(dao.findProfesor(30L)).thenReturn(prof);
+
+        Profesor result = profesorService.actualizarProfesorPorId(30L, dto);
+
+        assertEquals("Nuevo", result.getNombre());
+        assertEquals("Actualizado", result.getApellido());
+        assertEquals("Dr.", result.getTitulo());
+        assertEquals(30L, result.getId());
+
+        verify(dao).update(30L, result);
     }
 
     //@Test

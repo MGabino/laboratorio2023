@@ -10,6 +10,9 @@ import ar.edu.utn.frbb.tup.model.Profesor;
 import ar.edu.utn.frbb.tup.model.dto.MateriaDto;
 import ar.edu.utn.frbb.tup.business.impl.MateriaServiceImpl;
 import ar.edu.utn.frbb.tup.persistence.exception.MateriaNotFoundException;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
+import ar.edu.utn.frbb.tup.persistence.exception.YaExisteException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -75,13 +78,16 @@ public class MateriaServiceImplTest {
     }
 
     @Test
-    void testCrearMateria_ProfesorNoEncontrado() throws Exception {
-        doThrow(new MateriaNotFoundException("Profesor no encontrado"))
+    void testCrearMateria_ProfesorNoEncontrado() throws MateriaNotFoundException, YaExisteException {
+        // simulamos que buscarProfesor tira un error de ResponseStatusException
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Profesor no encontrado"))
                 .when(profesorService).buscarProfesor(1L);
 
+        // verificar que el servicio de materia reacciona lanzando MateriaNotFoundException
         assertThrows(MateriaNotFoundException.class,
                 () -> materiaService.crearMateria(materiaDto));
 
+        // y que no se guarda nada si no existe el profesor
         verify(dao, never()).save(any(), any());
     }
 

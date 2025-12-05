@@ -77,15 +77,13 @@ public class Alumno {
         asignatura.cursarAsignatura();
     }
 
-    private void existeAsignatura(Asignatura asignatura) /* throws AsignaturaNotFoundException */ {
+    private void existeAsignatura(Asignatura asignatura) {
         if(!asignaturas.contains(asignatura)) {
-            // throw new AsignaturaNotFoundException
             System.out.println("El alumno " + this.nombre + " " + this.apellido + " (ID: " + this.id + "), no tiene " +
                     "a la asignatura: " + asignatura.getNombreAsignatura());
         }
     }
-    public void aprobarAsignatura(Asignatura asignatura, int nota) throws CorrelatividadException, EstadoIncorrectoException /*, CorrelatividadException */ {
-        //Asignatura asignaturaAAprobar = getAsignaturaAAprobar(asignatura);
+    public void aprobarAsignatura(Asignatura asignatura, int nota) throws CorrelatividadException, EstadoIncorrectoException {
         existeAsignatura(asignatura);
         for (Materia correlativa :
                 asignatura.getCorrelatividades()) {
@@ -119,15 +117,6 @@ public class Alumno {
         return true;
     }
 
-    //public void actualizarAsignatura(Asignatura asignatura) {
-    //    for (Asignatura a:
-    //         asignaturas) {
-    //        if (a.getNombreAsignatura().equals(asignatura.getNombreAsignatura())) {
-    //            a.setEstado(asignatura.getEstado());
-    //            a.setNota(asignatura.getNota().get());
-    //        }
-    //    }
-    //}
 
     public void actualizarAsignatura(Asignatura asignatura) {  // si la asig pasa como cursada no se establece la nota, si para como aprobada si
         for (Asignatura a:

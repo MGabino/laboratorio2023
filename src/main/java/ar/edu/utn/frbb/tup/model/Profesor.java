@@ -2,6 +2,7 @@ package ar.edu.utn.frbb.tup.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class Profesor {
@@ -53,7 +54,24 @@ public class Profesor {
         return materiasDictadas;
     }
 
-    public void setMateriasDictadas(String nuevaMateria) {
-        this.materiasDictadas.add(nuevaMateria);
+    public void setMateriasDictadas(List<String> nuevaMateria) {
+        this.materiasDictadas = materiasDictadas;
+    }
+
+
+    // esto hace que dos objetos Profesor se consideren iguales si tienen el mismo id, nombre y lista de materias dictadas
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Profesor profesor = (Profesor) o;
+        return id == profesor.id &&
+                Objects.equals(nombre, profesor.nombre) &&
+                Objects.equals(materiasDictadas, profesor.materiasDictadas);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nombre, materiasDictadas);
     }
 }

@@ -55,4 +55,9 @@ public class MateriaDaoMemoryImpl implements MateriaDao {
         return true;
     }
 
+    // metodo creado para testear y limpiar memoria
+    public void clear() {
+        repositorioMateria.clear();
+    }
+
 }

@@ -17,7 +17,8 @@ import java.util.Random;
 @Service
 public class ProfesorServiceImpl implements ProfesorService {
 
-    private static final ProfesorDao profesorDao = new ProfesorDaoMemoryImpl();
+    // elimino esta linea para usar bien la inyeccion
+    //private static final ProfesorDao profesorDao = new ProfesorDaoMemoryImpl();
     @Autowired
     private ProfesorDao dao;
 
@@ -34,13 +35,13 @@ public class ProfesorServiceImpl implements ProfesorService {
         profesor.setNombre(profesorDto.getNombre());
         Random random = new Random();
         profesor.setId(random.nextLong());
-        profesorDao.saveProfesor(profesor);
+        dao.saveProfesor(profesor);
         return profesor;
     }
 
     @Override                   // long
     public Profesor findProfesor(int idProfesor) {
-        Profesor profesor = profesorDao.findProfesor(idProfesor);
+        Profesor profesor = dao.findProfesor(idProfesor);
 
         // Ordenar por nombre directamente porque es String
         profesor.getMateriasDictadas()
@@ -51,19 +52,19 @@ public class ProfesorServiceImpl implements ProfesorService {
 
     @Override
     public Profesor deleteProfesor(int idProfesor) {
-        return profesorDao.deleteProfesor(idProfesor);
+        return dao.deleteProfesor(idProfesor);
     }
 
     @Override
     public Profesor actualizarProfesorPorId(final Long idProfesor, final ProfesorDto profesorDto) { //throws ProfesorNotFoundException, DatoInvalidoException {
-        final Profesor profesor = profesorDao.findProfesor(idProfesor);
+        final Profesor profesor = dao.findProfesor(idProfesor);
 
         profesor.setId(idProfesor);
         profesor.setNombre(profesorDto.getNombre());
         profesor.setApellido(profesorDto.getApellido());
         profesor.setTitulo(profesorDto.getTitulo());
 
-        profesorDao.update(idProfesor, profesor);
+        dao.update(idProfesor, profesor);
         return profesor;
     }
 

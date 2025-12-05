@@ -25,12 +25,10 @@ import java.util.UUID;
 
 
 @Service
-// @DependsOn("materiaService")
 public class AsignaturaServiceImpl implements AsignaturaService {
     @Autowired
     MateriaService materiaService;
-    //@Autowired
-    //MateriaDao dao;
+
     @Autowired
     AsignaturaDao asignaturaDao;
     @Override
@@ -40,14 +38,12 @@ public class AsignaturaServiceImpl implements AsignaturaService {
 
     @Override
     public void actualizarAsignatura(Asignatura a) throws AsignaturaNoExisteException {
-        asignaturaDao.putAsignatura(a);
+        try {
+            asignaturaDao.putAsignatura(a);
+        } catch (Exception e) {
+            throw new AsignaturaNoExisteException("No existe");
+        }
     }
-    //@Override
-    //public List<Asignatura> asignaturaList(){
-    //    final List<Materia> materiaList = materiaService.getAllMaterias();
-    //    asignaturaDao.materiaToAsignatura(materiaList);   // aca se crean las asignaturas desde las materias ya creada
-    //    return asignaturaDao.getListaAsignaturas();
-    //}
 
     @Override
     public List<Asignatura> asignaturaList(){

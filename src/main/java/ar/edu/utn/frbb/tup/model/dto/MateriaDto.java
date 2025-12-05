@@ -19,9 +19,6 @@ public class MateriaDto {
     public void setCorrelatividades(List<Integer> correlatividades) {
         this.correlatividades = correlatividades;
     }
-    //public void setCorrelatividades(int[] correlatividades) {
-    //    this.correlatividades = correlatividades;
-    //}
 
     public int getProfesorId() {
         return profesorId;

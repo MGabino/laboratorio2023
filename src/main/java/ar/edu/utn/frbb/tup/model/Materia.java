@@ -37,10 +37,15 @@ public class Materia {
         return profesor;
     }
 
+
     public void setProfesor(Profesor profesor) {
         this.profesor = profesor;
-        profesor.setMateriasDictadas(this.nombre);  // al cuando se setea un profesor a la materia, se agrega en Profesor esta materia
-        // aca esta el error, las no se añade la materia a la lista del profesor
+        if (profesor != null) {
+            if (profesor.getMateriasDictadas() == null) {
+                profesor.setMateriasDictadas(new ArrayList<>());
+            }
+            profesor.getMateriasDictadas().add(this.nombre);
+        }
     }
 
     public void setCorrelatividades(List<Materia> correlatividades) {

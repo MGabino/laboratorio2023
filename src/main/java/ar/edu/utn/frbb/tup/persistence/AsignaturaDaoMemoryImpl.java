@@ -49,7 +49,9 @@ public class AsignaturaDaoMemoryImpl implements AsignaturaDao {
     }
 
     private List<Asignatura> listaAsignaturas = new ArrayList<>();
-    public void clearAsignaturas() {
+
+    public void clear() {
         listaAsignaturas.clear();
     }
+
 }

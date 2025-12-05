@@ -36,23 +36,6 @@ public class ProfesorDaoMemoryImpl implements ProfesorDao{
         );
     }
 
-    /*
-    @Override
-    public Profesor deleteProfesor(int idProfesor) {
-        for (Profesor p: repositorioProfesores.values()) {
-            if (idProfesor == p.getId()){
-                repositorioProfesores.remove(p);
-                System.out.println("El alumno fue eliminado exitosamente");
-                System.out.println(repositorioProfesores);
-                return p;
-            }
-        }
-        throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "No existen profesor con esos datos para eliminarlo."
-        );
-    }
-
-     */
     @Override
     public Profesor deleteProfesor(int idProfesor) {
         for (Profesor p: repositorioProfesores.values()) {
@@ -86,6 +69,10 @@ public class ProfesorDaoMemoryImpl implements ProfesorDao{
     @Override
     public void update(final Long id, final Profesor p) {
         repositorioProfesores.put(id, p);
+    }
+
+    public void clear() {
+        repositorioProfesores.clear();
     }
 
 }

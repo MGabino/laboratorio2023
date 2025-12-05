@@ -31,11 +31,18 @@ public class AlumnoController {
     private AlumnoService alumnoService;
     @Autowired
     private AsignaturaValidator asignaturaValidator;
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Void> handleIllegalArgument(IllegalArgumentException e) {
+        return ResponseEntity.badRequest().build();
+    }
+
     @PostMapping("/")
     public Alumno crearAlumno(@RequestBody AlumnoDto alumnoDto) {
         alumnoValidator.validarAlumno(alumnoDto);
         return alumnoService.crearAlumno(alumnoDto);
     }
+
     @GetMapping("/{idAlumno}")
     public Alumno buscarAlumno(@PathVariable Long idAlumno) {
 

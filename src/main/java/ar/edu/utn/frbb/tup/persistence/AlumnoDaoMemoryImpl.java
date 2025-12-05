@@ -62,4 +62,7 @@ public class AlumnoDaoMemoryImpl implements AlumnoDao {
         repositorioAlumnos.put(id, alumno);
     }
 
+    public void clear() {
+        repositorioAlumnos.clear();
+    }
 }

@@ -12,6 +12,7 @@ import ar.edu.utn.frbb.tup.persistence.exception.MateriaNotFoundException;
 import ar.edu.utn.frbb.tup.persistence.exception.YaExisteException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Random;
@@ -30,7 +31,11 @@ public class MateriaServiceImpl implements MateriaService {
         m.setNombre(materiadto.getNombre());
         m.setAnio(materiadto.getAnio());
         m.setCuatrimestre(materiadto.getCuatrimestre());
-        m.setProfesor(profesorService.buscarProfesor(materiadto.getProfesorId()));
+        try {
+            m.setProfesor(profesorService.buscarProfesor(materiadto.getProfesorId()));
+        } catch (ResponseStatusException e) {
+            throw new MateriaNotFoundException("Profesor no encontrado");
+        }
         dao.save(m, materiadto.getCorrelatividades());
         return m;
     }
